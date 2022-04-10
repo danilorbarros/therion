@@ -17,7 +17,7 @@ Each product will generate a single graphic by calling Therion.dragonstone() for
 # How to use
 
 1. Add the input data at therionlist.csv
-2. Execute the folowing comands: 
+2. Execute the following commands: 
     - import Therion as Octopinho
     - therion = Octopinho.Therion()
     - therion.get_therion_list()
