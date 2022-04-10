@@ -12,7 +12,7 @@ Therion is a class that created a code based in two .CSV files, that are used as
     - price
     - date 
 
-Each product will generate a single graphic by calling Therion.dragonstone() for its on but you can also see all graphics at one, using Therion.dragonstones()
+Each product will generate a single graphic by calling Therion.dragonstone(), but you can also see all product in one graphic using Therion.dragonstones()
 
 # How to use
 
