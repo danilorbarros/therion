@@ -1,6 +1,6 @@
 # Therion
 
-Since Therion (a thief character from Octopath Traveler) i named this web scraping code as such.
+Since Therion is a thief character (from Octopath Traveler) i named this web scraping code as such.
 
 Therion is a class that created a code based in two .CSV files, that are used as input and output.
   - Input: 
