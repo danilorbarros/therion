@@ -13,3 +13,11 @@ Therion is a class that created a code based in two .CSV files, that are used as
     - date 
 
 Each product will generate a single graphic by calling Therion.dragonstone() for its on but you can also see all graphics at one, using Therion.dragonstones()
+
+# How to use
+
+1. Add the input data
+2. Execute the folowing comands: 
+  2.1.a
+  2.2.b
+  2.3.c
