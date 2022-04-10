@@ -18,6 +18,9 @@ Each product will generate a single graphic by calling Therion.dragonstone() for
 
 1. Add the input data
 2. Execute the folowing comands: 
-  2.1.a
-  2.2.b
-  2.3.c
+  - import Therion as Octopinho
+  - therion = Octopinho.Therion()
+  - therion.get_therion_list()
+  - therion.get_prices('tag')
+  - therion.heathcote()
+  - therion.dragonstone() or therion.dragonstones()
