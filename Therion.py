@@ -1,21 +1,21 @@
-from bs4 import BeautifulSoup
+# [Library Instance]
+from bs4            import BeautifulSoup
 from urllib.request import urlopen
-from datetime import date, datetime
+from datetime       import date
 
-import time
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import random as rd
+import pandas               as pd
+import numpy                as np
+import matplotlib.pyplot    as plt
+import random               as rd
 
-# Criar uma função que preenche com none todos os campos de uma data X pra trás de um produto recentemente adicionado
-
+# [Auxiliar Function Instance]
+# Auxiliar functions that randomly choose a style of marker and line
 def steal_marker(marker_list):
     return marker_list[rd.randint(0, len(marker_list) - 1)]
-
 def steal_style(style_list):
     return style_list[rd.randint(0, len(style_list) - 1)]
 
+# [Therion Instance]
 class Therion:
     def __init__(self):
         self.product_name = []
@@ -36,6 +36,10 @@ class Therion:
         self.linestyles = ['-', '--', '-.', ':']
         self.markers = ['.',',','o','v','^','<','>','1','2','3','4','8','s','p','P','*','h','H','+','x','X','D','d','|','_']
 
+    '''
+        This is the first fuction that might be called in order to extract the existent data at therionlist.csv.
+            heathcote and steal will be explained later
+    '''
     def get_therion_list(self):
         self.therion_list_csv = pd.read_csv('therionlist.csv', sep=',')
         for counter in range(len(self.therion_list_csv)):
@@ -46,6 +50,29 @@ class Therion:
             self.steal(name_aux, link_aux, tag_aux)
         self.heathcote()
 
+    '''
+        This function is part of get_therion_list and is used just to set the existent data at the class lists
+    '''
+    def steal(self, product_name, product_link, product_tag):
+        self.product_name.append(product_name)
+        self.product_link.append(product_link)
+        self.product_tag.append(product_tag)
+
+    '''
+        This function is part of get_therion_list and is used to:
+            Initialize therion_csv (which is the CSV that will be used as output)
+            Initialize therion_list (which is used just to get the indexes of each product)
+            Initialize therion_dates (which stores all sampledates)
+    '''
+    def heathcote(self):
+        self.therion_csv = pd.read_csv("therion.csv", sep=",").sort_values(by=['date'])
+        self.therion_list = self.therion_csv.groupby('product').mean().index
+        self.therion_dates = self.therion_csv['date'].unique()
+
+    '''
+        This function is used to actually get the prices of each product based on its tag
+            steal_link, therion_write and therion_cleanup will be explained later
+    '''
     def get_prices(self, product_tag):
         inner_count = 0
         for link in self.product_link:
@@ -58,11 +85,9 @@ class Therion:
             inner_count = inner_count + 1
         self.therion_cleanup()
 
-    def steal(self, product_name, product_link, product_tag):
-        self.product_name.append(product_name)
-        self.product_link.append(product_link)
-        self.product_tag.append(product_tag)
-
+    '''
+        This is the function that use of web scraping to get each product price based on its tag
+    '''
     def steal_link(self, product_link, product_tag):
         if product_tag in self.product_tag:
             if product_tag == 'card':
@@ -73,7 +98,11 @@ class Therion:
         else:
             return None
 
+    '''
+        This is the function that writes therion.csv with output data
+    '''
     def therion_write(self, p_name, p_price):
+        # check if the product is already in the therion.csv or if it's a new one
         product_check = len(self.therion_csv.loc[self.therion_csv['product'] == p_name])
         self.file = open("therion.csv", "a")
         if product_check != 0:
@@ -84,6 +113,7 @@ class Therion:
             self.file.write((date.today()).strftime("%d-%m-%y"))
             self.file.write("\n")
         else:
+            # in case the product is a new one, this function will create the current date and get all the past dates
             for data in self.therion_dates:
                 self.file.write(p_name)
                 self.file.write(",")
@@ -102,11 +132,9 @@ class Therion:
         print("{} no valor de, {}".format(p_name,p_price))
         self.therion_break()
 
-    def heathcote(self):
-        self.therion_csv = pd.read_csv("therion.csv", sep=",").sort_values(by=['date'])
-        self.therion_list = self.therion_csv.groupby('product').mean().index
-        self.therion_dates = self.therion_csv['date'].unique()
-
+    '''
+        This is the function prints each graphic of each product price and also create a pdf of its figure
+    '''
     def dragonstone(self):
         for product in self.therion_list:
             product_plot = self.therion_csv.loc[self.therion_csv['product'] == product]
@@ -116,6 +144,9 @@ class Therion:
             plt.yticks(np.arange(0, 110, 10))
         plt.show()
 
+    '''
+        This is the function prints each product price in a single graphic
+    '''
     def dragonstones(self):
         for product in self.therion_list:
             product_prices = self.therion_csv.loc[self.therion_csv['product'] == product]['price']
@@ -130,9 +161,17 @@ class Therion:
 
         plt.show()
 
+    '''
+        This is the function responsible for close the opened file
+            therion_cleanup will be explained later
+    '''
     def therion_break(self):
         self.file.close()
-        
+        self.therion_cleanup()
+
+    '''
+        This is the function part of therion_break that put to none each current information stored
+    '''
     def therion_cleanup(self):
         self.current_link = None
         self.current_link_bs = None
