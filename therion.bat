@@ -1,3 +1,3 @@
 ECHO Stealing...
-cd C:\Users\culpi\Documents\Therion
+cd C:\Users\USER\...\Therion
 python Therion_Snatch.py
