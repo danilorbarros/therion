@@ -1,0 +1,3 @@
+ECHO Stealing...
+cd C:\Users\culpi\Documents\Therion
+python Therion_Snatch.py
