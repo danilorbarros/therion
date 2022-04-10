@@ -24,3 +24,4 @@ Each product will generate a single graphic by calling Therion.dragonstone() for
     - therion.get_prices('tag')
     - therion.heathcote()
     - therion.dragonstone() or therion.dragonstones()
+3. Or simply execute properly the .bat file
